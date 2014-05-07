@@ -24,12 +24,12 @@ public class TestFileLogic  {
     private static AbstractFile currentDir;
     private static String currentPath;
     private static String fullPath;
-    private PathNameSanitization path;
+  //  private PathNameSanitization path;
     public static void initialize() throws IOException {
         fileSystemsRoot = new FileSystemsRoot();
         currentDir = fileSystemsRoot;
         currentPath = Paths.get(currentDir.getName()).toString();
-        
+        fullPath = new String();
         System.out.println("CurrentPath: " + currentPath);
         System.out.println("CurrentPath alias: " + currentDir.getAlias());
     }
@@ -57,12 +57,13 @@ public class TestFileLogic  {
             
             String fmpath = ""; //new PathNameSanitization(null).getFullPath(fullPath)
         //    System.out.println("Full Path: " + path.getFullPath());
-            System.out.printf("\t %s\n%s\t\t\t\t %-2s %s %12.1f \t%-27s \t%s%n", fmpath, fileName, fileType, permissions, file.getSize() /1024.0, date.toString() , file.getAlias());        
+            System.out.printf("\t %s\t\t\t\t %-2s %s %12.1f \t%-27s \t%s%n", fileName, fileType, permissions, file.getSize() /1024.0, date.toString() , file.getAlias());        
         } 
     }
     public static void displayPathAndContents() throws EntityNotFolderishException {
         clearConsole();
-        System.out.println("Path:" + currentPath);        
+        System.out.println("Path:" + currentPath); 
+        System.out.println("FullPath: " + fullPath);
         List<AbstractFile> dirContents = currentDir.getAllChildren();   
         displayDirContents(dirContents);
     }
@@ -108,37 +109,46 @@ public static String dm(String md5) {
         List<AbstractFile> children = currentDir.getAllChildren();
         AbstractFile selectedDir = null;
         System.out.println("selection: " + selection);
-        if(isRoot) for (AbstractFile anEntity : children) {
+        if(isRoot) {
+            for (AbstractFile anEntity : children) {
             selection= new PathNameSanitization(selection).getOnlyLetter();
              System.out.println("selection San: " + selection);
             if (anEntity.getCharNameOnly().equals(selection= new PathNameSanitization(selection).getOnlyLetter()) && anEntity.isFolderish()) {
                 selectedDir =  anEntity;
                 break;
             }
-            String drive;
+            
            //TODO: get root drive
-       // --->   path.getFullPath(drive= new PathNameSanitization(selection).getDrive());
-        System.out.println("cu Path: " + selection);
+
         }
-        if(!isRoot) for (AbstractFile anEntity : children) {
+            String drive;
+            drive= new PathNameSanitization(selection).getDrive();
+          fullPath=drive;
+        System.out.println("cu Path: " + selection);
+    }
+        if(!isRoot) { for (AbstractFile anEntity : children) {
             if (anEntity.getFullName().equals(selection= new PathNameSanitization(selection).getDirectoryName()) && anEntity.isFolderish()) {
                 selectedDir =  anEntity;
                 break;
             }
-            String folder;
+
             //TODO: get current folder
      // --->       path.getFullPath(folder= new PathNameSanitization(selection).getDirectoryName());
+        }
+            
+            fullPath+=  new PathNameSanitization(selection).getDirectoryName();
+            
         }
         if(selectedDir==null) System.out.println("selected dir null");
         System.out.println("currentPath: " + currentPath);
         if (selectedDir != null) {
             currentDir = selectedDir;
           //  currentDir
-            System.out.println("currentDir name: " + currentDir.getFullName().toString());
-            System.out.println("currentPath: " + currentPath);
+         //   System.out.println("currentDir name: " + currentDir.getFullName().toString());
+        //    System.out.println("currentPath: " + currentPath);
             if(!(currentPath.equals(currentDir.getName())))    currentPath = Paths.get( currentDir.getFullName()).toString();
             else Paths.get(currentDir.getFullName(),currentDir.getFullName()).toString();
-            System.out.println("currentPath: " + currentPath);
+         //   System.out.println("currentPath: " + currentPath);
         }
         
     }
