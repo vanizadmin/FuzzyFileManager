@@ -8,6 +8,7 @@ package pm.entitymanager.logic.file;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -34,6 +35,7 @@ public class TestFileLogic  {
         fullPath = new String();
         System.out.println("CurrentPath: " + currentPath);
         System.out.println("CurrentPath alias: " + currentDir.getAlias());
+        cFullPath = new ArrayList<>();
     }
     private static void clearConsole() {
         try {
@@ -66,6 +68,8 @@ public class TestFileLogic  {
         clearConsole();
         System.out.println("Path:" + currentPath); 
         System.out.println("FullPath: " + fullPath);
+        System.out.println("FullPath List: " + cFullPath.toString());
+        
         List<AbstractFile> dirContents = currentDir.getAllChildren();   
         displayDirContents(dirContents);
     }
@@ -124,8 +128,9 @@ public static String dm(String md5) {
         }
             String drive;
             drive= new PathNameSanitization(selection).getDrive();
-          fullPath=drive;
+            fullPath=drive;
         System.out.println("cu Path: " + selection);
+        cFullPath.add(drive);
     }
         if(!isRoot) { for (AbstractFile anEntity : children) {
             if (anEntity.getFullName().equals(selection= new PathNameSanitization(selection).getDirectoryName()) && anEntity.isFolderish()) {
@@ -138,7 +143,8 @@ public static String dm(String md5) {
         }
             
             fullPath+=  new PathNameSanitization(selection).getDirectoryName();
-            
+            String directory = new PathNameSanitization(selection).getDirectoryName();
+            cFullPath.add(directory);
         }
         if(selectedDir==null) System.out.println("selected dir null");
         System.out.println("currentPath: " + currentPath);
