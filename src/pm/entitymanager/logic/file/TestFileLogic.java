@@ -24,6 +24,8 @@ public class TestFileLogic  {
     private static AbstractFile currentDir;
     private static String currentPath;
     private static String fullPath;
+    private static List<String> cFullPath;
+    
   //  private PathNameSanitization path;
     public static void initialize() throws IOException {
         fileSystemsRoot = new FileSystemsRoot();
@@ -77,8 +79,7 @@ public class TestFileLogic  {
 
            if((Paths.get(currentPath).getParent())==null && (currentPath.equals(fileSystemsRoot.getAlias())))  {
                System.out.println("Entered ");
-               currentPath = "";
-           
+               currentPath = "";           
            }
             System.out.println("currPath: " + currentPath);
             if((Paths.get(currentPath).getParent())==null){ 
