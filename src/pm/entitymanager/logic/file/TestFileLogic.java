@@ -36,6 +36,7 @@ public class TestFileLogic  {
         System.out.println("CurrentPath: " + currentPath);
         System.out.println("CurrentPath alias: " + currentDir.getAlias());
         cFullPath = new ArrayList<>();
+        System.out.println("Cln tst");
     }
     private static void clearConsole() {
         try {
