@@ -128,7 +128,7 @@ public static String dm(String md5) {
             cFullPath.add(directory);
         }
         if(selectedDir==null) System.out.println("selected dir null");
-        System.out.println("currentPath: " + currentPath);
+       
         if (selectedDir != null) {
             currentDir = selectedDir;
             if(!(currentPath.equals(currentDir.getName())))    currentPath = Paths.get( currentDir.getFullName()).toString();
