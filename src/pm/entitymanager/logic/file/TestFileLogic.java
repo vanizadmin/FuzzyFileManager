@@ -69,7 +69,7 @@ public class TestFileLogic  {
         List<AbstractFile> dirContents = currentDir.getAllChildren();   
         displayDirContents(dirContents);
     }
-    public static void moveToParent() {        
+    public static boolean moveToParent() {        
         if (currentDir.getParent() != null) {         
             currentDir = currentDir.getParent();
            if((Paths.get(currentPath).getParent())==null && (currentPath.equals(fileSystemsRoot.getAlias())))  {
@@ -83,8 +83,10 @@ public class TestFileLogic  {
                 cFullPath.remove(cFullPath.size() - 1);
                 fullPath = fullPath.replace(currentPath, "");                        
             }
+
         }
-        
+        if(currentDir.getAlias().equals(fileSystemsRoot.getAlias())) return(true);
+            else return(false);
     }
 public static String dm(String md5) {
    try {
@@ -114,6 +116,11 @@ public static String dm(String md5) {
         }
             String drive;
             drive= new PathNameSanitization(selection).getDrive();
+            System.out.println("Drive: " + drive);
+            PathNameSanitization n;
+            n = new PathNameSanitization(selection);
+            drive= n.getOnlyLetter();
+            System.out.println("Letter: " + drive);
             fullPath=drive;        
             cFullPath.add(drive);
     }
@@ -152,12 +159,13 @@ public static String dm(String md5) {
             Boolean isRoot=true; // is inside a root child ?
             do {
                 if (selection.equals("..")) {
-                    moveToParent();
-                    isRoot=true;
+                    isRoot = moveToParent();                   
                 } else {
                     if(!isRoot) moveToChild(selection= new PathNameSanitization(selection).getDirectoryName() , false);
-                    if(isRoot) moveToChild(selection= new PathNameSanitization(selection).getDrive(), true);
-                    isRoot=false;
+                    if(isRoot) {
+                        moveToChild(selection= new PathNameSanitization(selection).getDrive(), true);
+                        isRoot=false; 
+                    }
                 }
                 displayPathAndContents();
                 System.out.print("Select a directory ('..' to go up one level,'.' for exit):");
@@ -167,5 +175,10 @@ public static String dm(String md5) {
         } catch (EntityNotFolderishException ex) {
             Logger.getLogger(TestFileLogic.class.getName()).log(Level.SEVERE, null, ex);
         }
+        PathNameSanitization snt= new PathNameSanitization("nssss324232");
+        String l = snt.getOnlyLetter();
+        
+        System.out.println(l);
+        System.out.println(l.substring(0, 1).toUpperCase());
     }
 }
